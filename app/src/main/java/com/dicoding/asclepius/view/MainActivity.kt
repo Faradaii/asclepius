@@ -42,17 +42,24 @@ class MainActivity : AppCompatActivity() {
         launcherIntentGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
+
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
         if (uri != null) {
             currentImageUri = uri
 
+
             binding.cropConstraint.visibility = android.view.View.VISIBLE
 
             val bitmapImage = FileHelper.uriToBitmap(currentImageUri!!, this)
             binding.cropImageView.setImageBitmap(bitmapImage)
             val fileName = FileHelper.getFileNameFromUri(currentImageUri!!, this)!!
+
+            binding.rotateButton.setOnClickListener {
+                binding.cropImageView.rotateImage(90)
+                binding.cropImageView.requestLayout()
+            }
 
             binding.cropButton.setOnClickListener {
                 val cropped: Bitmap = binding.cropImageView.getCroppedImage()!!
@@ -62,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 showImage()
                 binding.cropConstraint.visibility = android.view.View.GONE
             }
+
 
         }
     }
@@ -80,7 +88,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onResults(results: List<Classifications>?) {
-                        showToast(results?.get(0).toString())
                         val resultString = results?.get(0)?.categories?.get(0)
                         moveToResult(currentImageUri.toString(), resultString)
                     }

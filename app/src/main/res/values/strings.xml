@@ -5,4 +5,19 @@
     <string name="gallery">Galeri</string>
     <string name="analyze">Analyze</string>
     <string name="result">Hasil Analisis</string>
+    <string name="rotation_value">Click to change rotation: %1$s</string>
+    <string name="result_image">Result Image</string>
+    <string name="try_another_image">Try Another Image</string>
+    <string name="relevant_news">Relevant News</string>
+    <string name="no_history">No History</string>
+    <string name="item_title">Item Title</string>
+    <string name="item_desc">Item Desc</string>
+    <string name="item_date">Item Date</string>
+    <string name="item_image">Item Image</string>
+    <string name="preview_image">Preview Image</string>
+    <string name="history">History</string>
+    <string name="start_analyze_image">Start Analyze Image</string>
+    <string name="upload_image_to_start_check_cancer">Upload image to start check cancer</string>
+    <string name="crop">Crop</string>
+
 </resources>

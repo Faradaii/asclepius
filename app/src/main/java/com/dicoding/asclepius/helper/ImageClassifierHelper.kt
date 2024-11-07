@@ -53,14 +53,12 @@ class ImageClassifierHelper(
     fun classifyStaticImage(imageUri: Uri) {
         if (imageClassifier == null) setupImageClassifier()
 
-        // Image processing pipeline
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
             .add(CastOp(DataType.UINT8))
             .build()
 
         try {
-            // Load and process the image
             val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val source = ImageDecoder.createSource(context.contentResolver, imageUri)
                 ImageDecoder.decodeBitmap(source)
@@ -70,13 +68,10 @@ class ImageClassifierHelper(
 
             val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
 
-            // Perform classification
             val results = imageClassifier?.classify(tensorImage)
 
-            // Trigger the results callback
             classifierListener?.onResults(results)
         } catch (e: Exception) {
-            // Trigger the error callback if classification fails
             classifierListener?.onError("Classification error: ${e.message}")
             Log.e(TAG, "Error during classification: ${e.message}")
         }

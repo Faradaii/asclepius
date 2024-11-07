@@ -23,6 +23,9 @@ class ResultActivity : AppCompatActivity() {
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = "Result"
+
         predictionDatabase = PredictionDatabase.getInstance(applicationContext)
 
         val imageUri = intent.getStringExtra("EXTRA_IMAGE_URI")?.let { Uri.parse(it) }
@@ -31,14 +34,19 @@ class ResultActivity : AppCompatActivity() {
 
 
         binding.apply {
-            resultImage.setImageURI(imageUri)
+            resultImage.setImageURI(imageUri ?: Uri.EMPTY)
             resultText.text = buildString {
-                append(predictions)
-                append("\n")
+                append(predictions ?: "Something went wrong")
+                append(" ")
                 append(confidenceScore)
-                append("%")
+                append(if (predictions != null) "%" else "(No Data)")
             }
             backButton.setOnClickListener { finish() }
+            newsButton.setOnClickListener {
+                val fragment = HealthNewsFragment()
+
+                fragment.show(supportFragmentManager, "dialog")
+            }
         }
 
         savePredictionHistory(imageUri.toString(), predictions ?: "", confidenceScore)
@@ -58,8 +66,6 @@ class ResultActivity : AppCompatActivity() {
 
 
     companion object {
-        private const val TAG = "ResultActivity"
-
         const val EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI"
         const val EXTRA_PREDICTION = "EXTRA_PREDICTION"
         const val EXTRA_CONFIDENCE_SCORE = "EXTRA_CONFIDENCE_SCORE"
