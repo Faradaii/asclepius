@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             galleryButton.setOnClickListener { startGallery() }
             analyzeButton.setOnClickListener { analyzeImage() }
+            historyButton.setOnClickListener {
+                val intent = Intent(this@MainActivity, HistoryActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
